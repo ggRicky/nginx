@@ -11,17 +11,17 @@
 # Please see /usr/share/doc/nginx-doc/examples/ for more detailed examples.
 ##
 
-# Default server configuration for https://www.ctt-app.com
+# Default server configuration
 #
 server {
+	listen 80 default_server;
+	listen [::]:80 default_server;
 
-	# SSL configuraton
+	# SSL configuration
 	#
 	listen 443 ssl default_server;
         listen [::]:443 ssl default_server;
-
-	# SSL certificate configuration for CTT
-        #
+	#
         ssl_certificate     /etc/nginx/ssl/cert_chain.crt;
         ssl_certificate_key /etc/nginx/ssl/ctt-app.key;
         ssl_protocols       TLSv1 TLSv1.1 TLSv1.2;
@@ -32,14 +32,12 @@ server {
 	#
 	# include snippets/snakeoil.conf;
 
-        # The server name
-	server_name www.ctt-app.com;
-
-        # The root for the Yii2 advanced template
 	root /var/www/web/cttwapp/frontend/web;
 
 	# Add index.php to the list if you are using PHP
 	index index.php index.html index.htm index.nginx-debian.html;
+
+	server_name www.ctt-app.com;
 
 	location / {
 
@@ -80,66 +78,6 @@ server {
 	#location ~ /\.ht {
 	#	deny all;
 	#}
-
-}
-
-# Default server configuration for http://www.ctt-app.com
-#
-server {
-
-        listen 80;
-        listen [::]:80;
-
-        # The server name
-        server_name www.ctt-app.com;
-
-        # The root for html and php files tests
-        root /var/www/html;
-        index index.php index.html;
-
-        location / {
-               try_files $uri $uri/ =404;
-        }
-
-        # Pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000
-        # 
-        location ~ \.php$ {
-                include snippets/fastcgi-php.conf;
-                fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-                # fastcgi_pass 127.0.0.1:9000;
-                fastcgi_pass unix:/var/run/php/php7.0-fpm.sock;
-        }
-
-}
-
-
-# Default server configuration for http://basic.ctt-app.com and http://www.basic.ctt-app.com
-#
-server {
-
-        listen 80;
-        listen [::]:80;
-
-        # The server name
-        server_name basic.ctt-app.com www.basic.ctt-app.com;
-
-        # The root for the Yii2 basic template
-        root /var/www/web/basic/web;
-        index index.php index.html;
-
-        location / {
-               try_files $uri $uri/ /index.php?$args;
-        }
-
-        # Pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000
-        #
-        location ~ \.php$ {
-                include snippets/fastcgi-php.conf;
-                fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-                # fastcgi_pass 127.0.0.1:9000;
-                fastcgi_pass unix:/var/run/php/php7.0-fpm.sock;
-        }
-
 }
 
 
